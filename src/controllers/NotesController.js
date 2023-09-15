@@ -4,13 +4,11 @@ class NotesController {
   async create(request, response) {
     const { title, description, tags, links } = request.body;
     const user_id = request.user.id;
-
     const note_id = await knex("notes").insert({
       title,
       description,
       user_id
     });
-
     const linksInsert = links.map(link => {
       return {
         note_id,
@@ -18,7 +16,7 @@ class NotesController {
       }
     });
 
-    await knex("links").insert(linksInsert);
+    await knex("links").insert(linksInsert)
 
     const tagsInsert = tags.map(name => {
       return {
@@ -28,7 +26,7 @@ class NotesController {
       }
     });
 
-    await knex("tags").insert(tagsInsert);
+    await knex("tags").insert(tagsInsert)
 
     return response.json();
   }
@@ -50,9 +48,9 @@ class NotesController {
   async delete(request, response) {
     const { id } = request.params;
 
-    await knex("notes").where({ id }).delete();
+    await knex("notes").where({ id }).delete()
 
-    return response.json();
+    return response.json()
   }
 
   async index(request, response) {
@@ -60,7 +58,7 @@ class NotesController {
 
     const user_id = request.user.id;
 
-    let notes;
+    let notes
 
     if (tags) {
       const filterTags = tags.split(',').map(tag => tag);
@@ -94,10 +92,10 @@ class NotesController {
         ...note,
         tags: noteTags
       }
-    });
+    })
 
-    return response.json(notesWithTags);
+    return response.json(notesWithTags)
   }
 }
 
-module.exports = NotesController;
+module.exports = NotesController
